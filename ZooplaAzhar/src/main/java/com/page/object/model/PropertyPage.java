@@ -1,5 +1,7 @@
 package com.page.object.model;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +18,7 @@ public class PropertyPage {
 	private WebElement searchSubmit;
 	
 	@FindBy(xpath="//a[@class='listing-results-price text-price']")
-	private WebElement homePricesXpaht;
+	private List<WebElement> homePricesXpath;
 			
 	@FindBy(xpath="//img[@class='js-lazy-loaded']")
 	private WebElement propertyLogo;
@@ -41,8 +43,8 @@ public class PropertyPage {
 		return searchSubmit;
 	}
 
-	public WebElement getHomePricesXpaht() {
-		return homePricesXpaht;
+	public List<WebElement> getHomePricesXpath() {
+		return homePricesXpath;
 	}
 
 	public WebElement getPropertyLogo() {

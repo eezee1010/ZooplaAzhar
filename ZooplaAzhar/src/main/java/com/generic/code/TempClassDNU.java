@@ -1,7 +1,5 @@
 package com.generic.code;
 
-package com.generic.code;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -18,12 +16,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 
 import com.config.BaseConfig;
-import com.page.object.model.LoginPage;
-import com.util.ExplicitWait;
+import com.page.object.model.LoginsPage;
+import com.util.Wait;
 import com.util.Highlighter;
 import com.util.ScreenShot;
 
-public class BaseLogin {
+public class TempClassDNU {
 	protected static WebDriver driver;
 	public static void getLogin() throws Throwable {
 		
@@ -32,28 +30,28 @@ public class BaseLogin {
 		System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY,"true");
 		Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
 		driver = new ChromeDriver();
-		LoginPage login = new LoginPage(driver);
+		LoginsPage login = new LoginsPage(driver);
 		
 		driver.manage().window().maximize();
-		driver.get(BaseConfig.getConfig("URL"));
+		driver.get(BaseConfig.getconfig("URL"));
 				
-		login.getAcceptCookie().click();
+		login.getAcceptcookies().click();
 
-		Highlighter.getcolor(driver, login.getSignInBtn());				
+		Highlighter.getcolor(driver, login.getSignin());				
 		ScreenShot.getScreenShot(driver, "SignInPage");
-		login.getSignInBtn().click();
+		login.getSignin().click();
 		
-		new ExplicitWait().getExplicitWait(driver, login.getEmail());
+		new Wait().getExplicitWait(driver, login.getEmail());
 		
-		login.getEmail().sendKeys(BaseConfig.getConfig("userName"));
+		login.getEmail().sendKeys(BaseConfig.getconfig("userName"));
 		Highlighter.getcolor(driver, login.getEmail(),"green");
 				
-		login.getPassWord().sendKeys(BaseConfig.getConfig("passWord"));
-		Highlighter.getcolor(driver, login.getPassWord(),"yellow");		
+		login.getPasswrd().sendKeys(BaseConfig.getconfig("passWord"));
+		Highlighter.getcolor(driver, login.getPasswrd(),"yellow");		
 				
-		Highlighter.getcolor(driver, login.getSubmitBtn());		
+		Highlighter.getcolor(driver, login.getLogin());		
 		ScreenShot.getScreenShot(driver, "Login Page");
-		login.getSubmitBtn().click();
+		login.getLogin().click();
 		System.out.println("Title of the Page is: "+driver.getTitle());
 		ScreenShot.getScreenShot(driver, "Home Page");
 		

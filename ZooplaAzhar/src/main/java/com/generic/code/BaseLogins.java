@@ -1,6 +1,4 @@
-package com.generic.code;	
-
-
+package com.generic.code;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,46 +10,56 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.config.BaseConfig;
+import com.page.object.model.LoginsPage;
 import com.util.Highlighter;
+import com.util.ScreenShot;
 import com.util.Wait;
 
 import org.openqa.selenium.WebElement;
 
 public class BaseLogins {
 
-	public static void main(String[] args) throws InterruptedException {
+	//protected static WebDriver driver;
+
+	public static WebDriver getLogin() throws Throwable {
 		System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
 		System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
 		Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
-		
+
 		WebDriver driver = new ChromeDriver();
+		LoginsPage logins = new LoginsPage(driver);
+
 		driver.manage().window().maximize();
-		driver.get("https://www.zoopla.co.uk/");
+		driver.manage().deleteAllCookies();
+		driver.get(BaseConfig.getconfig("URL"));
+
+		System.out.println(driver.getTitle());
+
+		System.out.println(driver.getCurrentUrl());
+
+		logins.getAcceptcookies().click();
+
+		new Highlighter().getcolor(driver, logins.getSignin(), "green", "red");
+		ScreenShot.getScreenShot(driver, "SignInPage");
+		logins.getSignin().click();
+
+		new Wait().getExplicitWait(driver, logins.getEmail());
+		Highlighter.getcolor(driver, logins.getEmail(), "green", "red");
+		logins.getEmail().sendKeys(BaseConfig.getconfig("email"));
 		
-		WebElement acceptcookies = driver.findElement(By.xpath("//*[@class='ui-button-primary ui-cookie-accept-all-medium-large']"));
-		acceptcookies.click();
-		
-		WebElement signin = driver.findElement(By.xpath("//*[@class='button button--tertiary-dark account-link__text']"));
-		//new Highlighter().getcolor(driver, signin);
-		Thread.sleep(3000);
-		signin.click();
-		
-		WebDriverWait obj = new WebDriverWait(driver, 30);
-		obj.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//*[@id='signin_email']"), 0));
-		WebElement email = driver.findElement(By.xpath("//*[@id='signin_email']"));
-		//new Highlighter().getcolor(driver, email);
-		
-		email.sendKeys("eezee1010@hotmail.com");
-		
-		WebElement passwd = driver.findElement(By.xpath("//*[@name='signin_password']"));
-		//new Highlighter().getcolor(driver, passwd);
-		passwd.sendKeys("love7232");
-		Thread.sleep(5000);
-		WebElement login = driver.findElement(By.xpath("//*[@id='signin_submit']"));
-		//new Highlighter().getcolor(driver, login);
-		login.click();
-		Thread.sleep(5000);
-		driver.quit();		
+
+		logins.getPasswrd().sendKeys(BaseConfig.getconfig("pass"));
+		Highlighter.getcolor(driver, logins.getPasswrd(),  "green", "red");
+
+		Highlighter.getcolor(driver, logins.getLogin(), "green", "red");
+		ScreenShot.getScreenShot(driver, "Login page");
+		logins.getLogin().click();
+
+		System.out.println("Title of the Page is: " + driver.getTitle());
+		ScreenShot.getScreenShot(driver, "Home Page");
+		return driver;
 		
 	}
+	
 }
